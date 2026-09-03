@@ -1,27 +1,22 @@
 pipeline {
     agent any
-    stages {
+    stages {              // ONE stages block
         stage('Checkout') {
-            steps {
+            steps { 
                 checkout scm
             }
         }
-    }
-    stages {
         stage('Test') {
-            steps {
+            steps { 
                 sh 'echo "Running tests..."'
                 sh 'pytest tests/'
             }
         }
-    }
-
-    stages {
         stage('Build') {
-            steps {
+            steps { 
                 sh 'echo "Building the application..."'
-                docker build -t product-demo .
-                docker run --rm product-demo
+                sh 'docker build -t product-demo .'
+                sh 'docker run --rm product-demo'
             }
         }
     }
