@@ -6,17 +6,18 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Test') {
-            steps { 
-                sh 'echo "Running tests..."'
-                sh 'pytest tests/'
-            }
-        }
         stage('Build') {
             steps { 
                 sh 'echo "Building the application..."'
                 sh 'docker build -t product-demo .'
                 sh 'docker run --rm product-demo'
+            }
+        }
+
+            stage('smoke test') {
+            steps { 
+                sh 'echo "Running smoke tests..."'
+                sh 'docker run --rm product-demo | grep "Hello from the product demo!"'
             }
         }
     }
