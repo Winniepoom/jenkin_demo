@@ -7,15 +7,15 @@ pipeline {
             }
         }
     }
-    stages [
+    stages {
         stage('Test') {
             steps {
                 sh 'echo "Running tests..."'
                 sh 'pytest tests/'
             }
         }
-    ]
-    
+    }
+
     stages {
         stage('Build') {
             steps {
