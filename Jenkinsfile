@@ -24,7 +24,7 @@ pipeline {
             steps {
                  withCredentials([string(credentialsId: 'dockerhub-token', variable: 'DH_TOKEN')]) {
                 sh 'echo "$DH_TOKEN" | docker login -u analatos --password-stdin'
-                sh 'docker push analatos/product-demo:${env.IMAGE_TAG}'
+                sh "docker push analatos/product-demo:${env.IMAGE_TAG}"
         }
     }
 }
