@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    def tag = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}" — .take(7)
+    def tag = "${env.BUILD_NUMBER}-${env.GIT_COMMIT.take(7)}" — .take(7) 
     stages {              // ONE stages block
         stage('Checkout') {
             steps { 
