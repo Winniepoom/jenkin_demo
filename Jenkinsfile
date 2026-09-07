@@ -26,7 +26,7 @@ pipeline {
         stage('Push') {
             when { branch 'main' } 
             steps {
-            withCredentials([usernamePassword(credentialsId: 'ecr-ci-key',
+            withCredentials([usernamePassword(credentialsId: 'ecr-ci-key',  
                     usernameVariable: 'AWS_ID', passwordVariable: 'AWS_SECRET')]) {
                 sh '''
                 export AWS_ACCESS_KEY_ID="$AWS_ID"
