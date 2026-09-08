@@ -39,5 +39,24 @@ pipeline {
             }
     }
 }
+        stage('Bump') {
+            when { branch 'main' }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'gitops-write-token',
+                        usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                    sh '''
+                        rm -rf gitops-repo
+                        git clone https://$GH_USER:$GH_TOKEN@github.com/Winniepoom/gitops-repo.git
+                        cd gitops-repo
+                        sed -i "s|image: .*product-demo:[^ ]*|image: $ECR_URI/product-demo:$IMAGE_TAG|" product-demo.yaml
+                        git config user.email "jenkins-ci@product-demo.local"
+                        git config user.name "jenkins-ci"
+                        git add product-demo.yaml
+                        git commit -m "bump product-demo to $IMAGE_TAG (build ${BUILD_NUMBER})" || echo "no changes to commit"
+                        git push
+                    '''
+                }
+            }
+        }
     }
 }
