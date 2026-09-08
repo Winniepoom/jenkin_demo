@@ -20,9 +20,10 @@ pipeline {
         }
         stage('smoke test') {
             steps {
-            sh "docker run -d --name smoke-${env.BUILD_NUMBER} -p 8081:8080 ${ECR_URI}/product-demo:${env.IMAGE_TAG}"
-            sh 'curl -s http://localhost:8081 | grep "Hello from the product demo!"'
-            sh "docker rm -f smoke-${env.BUILD_NUMBER}"            }
+            sh "docker run -d --name smoke-${env.BUILD_NUMBER} ${ECR_URI}/product-demo:${env.IMAGE_TAG}"
+            sh 'SIP=$(docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" smoke-$BUILD_NUMBER); curl -s --retry 5 --retry-delay 1 --retry-connrefused http://$SIP:8080 | grep "Hello from the product demo!"'
+            sh "docker rm -f smoke-${env.BUILD_NUMBER}"          
+            }
         }
         stage('Push') {
             when { branch 'main' }

@@ -10,5 +10,4 @@ class ProductHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
 if __name__ == "__main__":
-	main()
-#PR-Test hope this will work
+    HTTPServer(("0.0.0.0", 8080), ProductHandler).serve_forever()
