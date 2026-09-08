@@ -24,7 +24,6 @@ pipeline {
             sh 'curl -s http://localhost:8081 | grep "Hello from the product demo!"'
             sh "docker rm -f smoke-${env.BUILD_NUMBER}"            }
         }
-        #te
         stage('Push') {
             when { branch 'main' }
             steps {
