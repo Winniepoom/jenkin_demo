@@ -20,13 +20,15 @@ pipeline {
         }
         stage('smoke test') {
             steps {
-                sh "docker run --rm ${ECR_URI}/product-demo:${env.IMAGE_TAG} | grep 'Hello from the product demo!'"
-            }
+            sh "docker run -d --name smoke-${env.BUILD_NUMBER} -p 8081:8080 ${ECR_URI}/product-demo:${env.IMAGE_TAG}"
+            sh 'curl -s http://localhost:8081 | grep "Hello from the product demo!"'
+            sh "docker rm -f smoke-${env.BUILD_NUMBER}"            }
         }
+        #te
         stage('Push') {
-            when { branch 'main' } 
+            when { branch 'main' }
             steps {
-            withCredentials([usernamePassword(credentialsId: 'ecr-ci-key',
+            withCredentials([usernamePassword(credentialsId: 'ecr-ci-key',  
                     usernameVariable: 'AWS_ID', passwordVariable: 'AWS_SECRET')]) {
                 sh '''
                 export AWS_ACCESS_KEY_ID="$AWS_ID"
