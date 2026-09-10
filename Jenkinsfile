@@ -51,7 +51,7 @@ pipeline {
                         sed -i "s|tag: .*|tag: $IMAGE_TAG|" charts/product-demo/values.yaml
                         git config user.email "jenkins-ci@product-demo.local"
                         git config user.name "jenkins-ci"
-                        git add charts/product-demo/templates/deployment.yaml charts/product-demo/templates/service.yaml
+                        git add charts/product-demo/values.yaml
                         git commit -m "bump product-demo to $IMAGE_TAG (build ${BUILD_NUMBER})" || echo "no changes to commit"
                         git push
                     '''
