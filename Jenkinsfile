@@ -48,7 +48,7 @@ pipeline {
                         rm -rf gitops-repo
                         git clone https://$GH_USER:$GH_TOKEN@github.com/Winniepoom/gitops-repo.git
                         cd gitops-repo
-                        sed -i "s|image: .*product-demo:[^ ]*|image: $ECR_URI/product-demo:$IMAGE_TAG|" product-demo.yaml
+                        sed -i "s|tag: .*|tag: $IMAGE_TAG|" charts/product-demo/values.yaml
                         git config user.email "jenkins-ci@product-demo.local"
                         git config user.name "jenkins-ci"
                         git add product-demo.yaml
